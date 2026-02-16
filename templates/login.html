@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MamTech NSS Cross Checking</title>
+    <style>
+      :root {
+        --blue: #0b4ea2;
+        --blue2: #0a3f84;
+        --white: #ffffff;
+        --ink: #0f172a;
+        --muted: #64748b;
+        --ring: rgba(11, 78, 162, 0.22);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+        color: var(--ink);
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            1200px 600px at 10% 10%,
+            rgba(255, 255, 255, 0.9),
+            rgba(255, 255, 255, 0)
+          ),
+          linear-gradient(
+            135deg,
+            rgba(11, 78, 162, 0.14),
+            rgba(255, 255, 255, 0.65) 45%,
+            rgba(11, 78, 162, 0.1)
+          );
+      }
+
+      .wrap {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px 16px;
+      }
+
+      .shell {
+        width: min(980px, 100%);
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+      }
+
+      @media (max-width: 860px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .brand {
+        background: linear-gradient(135deg, var(--blue), var(--blue2));
+        border-radius: 20px;
+        padding: 26px 22px;
+        color: var(--white);
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 18px 50px rgba(2, 8, 23, 0.18);
+      }
+
+      .brand:before {
+        content: "";
+        position: absolute;
+        inset: -80px -120px auto auto;
+        width: 320px;
+        height: 320px;
+        background: rgba(255, 255, 255, 0.12);
+        border-radius: 50%;
+        filter: blur(0px);
+      }
+
+      .brand:after {
+        content: "";
+        position: absolute;
+        inset: auto auto -120px -120px;
+        width: 360px;
+        height: 360px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+      }
+
+      .brand-inner {
+        position: relative;
+        z-index: 1;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .logo img {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+        background: #fff;
+        padding: 6px;
+        object-fit: contain;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      }
+      .logo .tag {
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        line-height: 1.15;
+        font-size: 14px;
+        opacity: 0.95;
+      }
+
+      .title {
+        margin: 6px 0 10px;
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: 0.2px;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1.55;
+        font-size: 14px;
+        max-width: 52ch;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: 0 18px 50px rgba(2, 8, 23, 0.1);
+        backdrop-filter: blur(6px);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .hint {
+        margin: 0 0 16px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .error {
+        background: rgba(220, 38, 38, 0.08);
+        border: 1px solid rgba(220, 38, 38, 0.22);
+        color: #991b1b;
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+
+      label {
+        font-size: 12px;
+        color: var(--muted);
+        display: block;
+        margin: 10px 0 6px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 23, 42, 0.14);
+        outline: none;
+        font-size: 14px;
+        background: #fff;
+        transition:
+          box-shadow 0.15s,
+          border-color 0.15s;
+      }
+      input:focus {
+        border-color: rgba(11, 78, 162, 0.55);
+        box-shadow: 0 0 0 4px var(--ring);
+      }
+
+      button {
+        margin-top: 14px;
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--blue), var(--blue2));
+        cursor: pointer;
+        box-shadow: 0 14px 30px rgba(11, 78, 162, 0.25);
+        transition: transform 0.12s ease;
+      }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      button:active {
+        transform: translateY(0px);
+      }
+
+      .footer {
+        margin-top: 14px;
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="shell">
+        <section class="brand">
+          <div class="brand-inner">
+            <div class="logo">
+              <img
+                src="{{ url_for('static', filename='mamtech_logo.png') }}"
+                alt="MamTech Logo"
+                onerror="this.style.display = 'none'"
+              />
+              <div class="tag">
+                MAMPONG TECHNICAL COLLEGE OF EDUCATION<br />
+                ACADEMIC AFFAIRS AND ASSESMENT UNIT
+              </div>
+            </div>
+
+            <div class="title">
+              NATIONAL SERVICE STUDENT DETAILS CROSS CHECKKING
+            </div>
+            <p class="subtitle">
+              Enter your <b>Index Number</b> and <b>Last Name</b> to view only
+              your own submitted details.
+            </p>
+          </div>
+        </section>
+
+        <section class="card">
+          <h3>Student Login</h3>
+          <p class="hint">
+            Use the same index number and last name exactly as provided in the
+            school record.
+          </p>
+
+          {% if error %}
+          <div class="error">{{ error }}</div>
+          {% endif %}
+
+          <form method="post" autocomplete="off">
+            <label for="index_number">Index Number</label>
+            <input
+              id="index_number"
+              name="index_number"
+              placeholder="e.g., 2100005"
+              required
+            />
+
+            <label for="last_name">Last Name</label>
+            <input
+              id="last_name"
+              name="last_name"
+              placeholder="e.g., Osei"
+              required
+            />
+
+            <button type="submit">View My NSS Details</button>
+          </form>
+
+          <div class="footer">© MamTech — NSS Cross Checking Portal</div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

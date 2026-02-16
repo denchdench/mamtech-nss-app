@@ -1,0 +1,14 @@
+<!doctype html>
+<html>
+  <body>
+    <h3>Upload Students CSV</h3>
+
+    <form method="post" enctype="multipart/form-data">
+      <input type="hidden" name="pw" value="{{ request.args.get('pw','') }}" />
+      <input type="file" name="file" accept=".csv" required />
+      <button type="submit">Upload</button>
+    </form>
+
+    <p>Tip: use /upload?pw=admin123</p>
+  </body>
+</html>
