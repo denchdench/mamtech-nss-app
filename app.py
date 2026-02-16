@@ -4,7 +4,6 @@ import sqlite3, csv, io, os
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret")
 
-# Database path (Render will use /var/data)
 DB = os.environ.get("DB_PATH", "students.db")
 
 def db():
@@ -33,6 +32,13 @@ def init_db():
     """)
     con.commit()
     con.close()
+
+# ✅ POINT 1: ensure DB/table exists even before upload/login
+init_db()
+
+@app.before_request
+def ensure_db():
+    init_db()
 
 @app.route("/")
 def home():
@@ -169,6 +175,5 @@ def logout():
     return redirect("/login")
 
 if __name__ == "__main__":
-    init_db()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
